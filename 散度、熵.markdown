@@ -1,0 +1,162 @@
+# 机器学习中的散度与熵
+
+## 目录
+1. [熵相关概念](#1-熵相关概念)
+   - [1.1 香农熵](#11-香农熵-shannon-entropy)
+   - [1.2 交叉熵](#12-交叉熵-cross-entropy)
+   - [1.3 条件熵](#13-条件熵-conditional-entropy)
+   - [1.4 联合熵](#14-联合熵-joint-entropy)
+   - [1.5 雷尼熵](#15-雷尼熵-rényi-entropy)
+2. [散度相关概念](#2-散度相关概念)
+   - [2.1 KL散度](#21-kl散度-kullback-leibler-divergence)
+   - [2.2 JS散度](#22-js散度-jensen-shannon-divergence)
+   - [2.3 海林格距离](#23-海林格距离-hellinger-distance)
+   - [2.4 总变分距离](#24-总变分距离-total-variation-distance)
+3. [核心关联](#3-核心关联)
+4. [附录：公式速查表](#4-附录公式速查表)
+
+---
+
+## 1. 熵相关概念
+
+### 1.1 香农熵 (Shannon Entropy)
+# 定义  
+衡量随机变量的不确定性或信息量。
+
+# 公式  
+$$
+H(X) = -\sum_{x \in X} p(x) \log p(x)
+$$
+
+# 应用  
+数据压缩、信息编码。
+
+---
+
+### 1.2 交叉熵 (Cross-Entropy)
+# 定义  
+衡量两个概率分布之间的差异，常用于分类任务。
+
+# 公式  
+$$
+H(p, q) = -\sum_{x \in X} p(x) \log q(x)
+$$
+
+# 特性  
+非对称，$ H(p, q) \neq H(q, p) $。
+
+---
+
+### 1.3 条件熵 (Conditional Entropy)
+# 定义  
+已知随机变量 $ Y $ 时，$ X $ 的不确定性。
+
+# 公式  
+$$
+H(X|Y) = -\sum_{x,y} p(x,y) \log p(x|y)
+$$
+
+---
+
+### 1.4 联合熵 (Joint Entropy)
+# 定义  
+两个随机变量联合分布的不确定性。
+
+# 公式  
+$$
+H(X,Y) = -\sum_{x,y} p(x,y) \log p(x,y)
+$$
+
+---
+
+### 1.5 雷尼熵 (Rényi Entropy)
+# 定义  
+香农熵的广义形式，引入参数 $ \alpha $。
+
+# 公式  
+$$
+H_\alpha(X) = \frac{1}{1-\alpha} \log \sum_{x} p(x)^\alpha
+$$
+
+# 特例  
+$ \alpha \to 1 $ 时退化为香农熵。
+
+---
+
+## 2. 散度相关概念
+
+### 2.1 KL散度 (Kullback-Leibler Divergence)
+# 定义  
+衡量两个分布 $ p $ 和 $ q $ 的差异。
+
+# 公式  
+$$
+D_{KL}(p \| q) = \sum_{x} p(x) \log \frac{p(x)}{q(x)}
+$$
+
+# 特性  
+非对称且非负，$ D_{KL}(p \| q) \neq D_{KL}(q \| p) $。
+
+---
+
+### 2.2 JS散度 (Jensen-Shannon Divergence)
+# 定义  
+KL散度的对称化版本，范围在 [0, 1]。
+
+# 公式  
+$$
+D_{JS}(p \| q) = \frac{1}{2} D_{KL}(p \| m) + \frac{1}{2} D_{KL}(q \| m)
+$$
+其中 $ m = \frac{p + q}{2} $。
+
+# 应用  
+GANs中的分布匹配。
+
+---
+
+### 2.3 海林格距离 (Hellinger Distance)
+# 定义  
+衡量两个分布的相似性，范围在 [0, 1]。
+
+# 公式  
+$$
+H(p, q) = \sqrt{\frac{1}{2} \sum_{x} \left( \sqrt{p(x)} - \sqrt{q(x)} \right)^2}
+$$
+
+# 特性  
+对称且满足三角不等式。
+
+---
+
+### 2.4 总变分距离 (Total Variation Distance)
+# 定义  
+两个分布差异的最大绝对值。
+
+# 公式  
+$$
+\delta(p, q) = \frac{1}{2} \sum_{x} |p(x) - q(x)|
+$$
+
+---
+
+## 3. 核心关联
+# 熵与散度的关系  
+交叉熵 = 香农熵 + KL散度。
+
+# 机器学习应用  
+- **KL散度**：变分推断、EM算法。  
+- **交叉熵**：分类损失函数（如交叉熵损失）。  
+- **JS散度**：生成对抗网络（GANs）。  
+
+---
+
+## 4. 附录：公式速查表
+
+| 名称           | 公式                                      |
+|----------------|-------------------------------------------|
+| **香农熵**     | $ H(X) = -\sum p(x) \log p(x) $         |
+| **KL散度**     | $ D_{KL}(p \| q) = \sum p(x) \log \frac{p(x)}{q(x)} $ |
+| **JS散度**     | $ D_{JS}(p \| q) = \frac{1}{2} [D_{KL}(p \| m) + D_{KL}(q \| m)] $ |
+| **交叉熵**     | $ H(p, q) = -\sum p(x) \log q(x) $       |
+| **海林格距离** | $ H(p, q) = \sqrt{\frac{1}{2} \sum (\sqrt{p(x)} - \sqrt{q(x)})^2} $ |
+| **总变分距离** | $ \delta(p, q) = \frac{1}{2} \sum \|p(x) - q(x)\| $ |
