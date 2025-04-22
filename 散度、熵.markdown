@@ -12,151 +12,204 @@
    - [2.2 JS散度](#22-js散度-jensen-shannon-divergence)
    - [2.3 海林格距离](#23-海林格距离-hellinger-distance)
    - [2.4 总变分距离](#24-总变分距离-total-variation-distance)
-3. [核心关联](#3-核心关联)
-4. [附录：公式速查表](#4-附录公式速查表)
+3. [连续形式与均值表示](#3-连续形式与均值表示)
+   - [3.1 熵的连续形式](#31-熵的连续形式)
+   - [3.2 散度的连续形式](#32-散度的连续形式)
+4. [核心关联与应用](#4-核心关联与应用)
+5. [附录](#5-附录)
+   - [公式速查表](#公式速查表)
+   - [关键区别与注意事项](#关键区别与注意事项)
 
 ---
 
 ## 1. 熵相关概念
 
 ### 1.1 香农熵 (Shannon Entropy)
-# 定义  
-衡量随机变量的不确定性或信息量。
-
-# 公式  
-$$
-H(X) = -\sum_{x \in X} p(x) \log p(x)
-$$
-
-# 应用  
-数据压缩、信息编码。
+- **离散形式**：
+  $$
+  H(X) = -\sum_{x \in X} p(x) \log p(x)
+  $$
+- **连续形式（微分熵）**：
+  $$
+  H(X) = -\int_{x \in X} p(x) \log p(x) \, dx
+  $$
+- **均值表示**：
+  $$
+  H(X) = -\mathbb{E}_{p(x)} \left[ \log p(x) \right]
+  $$
+- **应用**：数据压缩、信息编码。
 
 ---
 
 ### 1.2 交叉熵 (Cross-Entropy)
-# 定义  
-衡量两个概率分布之间的差异，常用于分类任务。
-
-# 公式  
-$$
-H(p, q) = -\sum_{x \in X} p(x) \log q(x)
-$$
-
-# 特性  
-非对称，$ H(p, q) \neq H(q, p) $。
+- **离散形式**：
+  $$
+  H(p, q) = -\sum_{x \in X} p(x) \log q(x)
+  $$
+- **连续形式**：
+  $$
+  H(p, q) = -\int_{x \in X} p(x) \log q(x) \, dx
+  $$
+- **均值表示**：
+  $$
+  H(p, q) = -\mathbb{E}_{p(x)} \left[ \log q(x) \right]
+  $$
+- **特性**：非对称，$ H(p, q) \neq H(q, p) $。
 
 ---
 
 ### 1.3 条件熵 (Conditional Entropy)
-# 定义  
-已知随机变量 $ Y $ 时，$ X $ 的不确定性。
-
-# 公式  
-$$
-H(X|Y) = -\sum_{x,y} p(x,y) \log p(x|y)
-$$
+- **离散形式**：
+  $$
+  H(X|Y) = -\sum_{x,y} p(x,y) \log p(x|y)
+  $$
+- **连续形式**：
+  $$
+  H(X|Y) = -\iint p(x,y) \log p(x|y) \, dx dy
+  $$
+- **均值表示**：
+  $$
+  H(X|Y) = -\mathbb{E}_{p(x,y)} \left[ \log p(x|y) \right]
+  $$
 
 ---
 
 ### 1.4 联合熵 (Joint Entropy)
-# 定义  
-两个随机变量联合分布的不确定性。
-
-# 公式  
-$$
-H(X,Y) = -\sum_{x,y} p(x,y) \log p(x,y)
-$$
+- **离散形式**：
+  $$
+  H(X,Y) = -\sum_{x,y} p(x,y) \log p(x,y)
+  $$
+- **连续形式**：
+  $$
+  H(X,Y) = -\iint p(x,y) \log p(x,y) \, dx dy
+  $$
 
 ---
 
 ### 1.5 雷尼熵 (Rényi Entropy)
-# 定义  
-香农熵的广义形式，引入参数 $ \alpha $。
-
-# 公式  
-$$
-H_\alpha(X) = \frac{1}{1-\alpha} \log \sum_{x} p(x)^\alpha
-$$
-
-# 特例  
-$ \alpha \to 1 $ 时退化为香农熵。
+- **离散形式**：
+  $$
+  H_\alpha(X) = \frac{1}{1-\alpha} \log \sum_{x} p(x)^\alpha
+  $$
+- **连续形式**：
+  $$
+  H_\alpha(X) = \frac{1}{1-\alpha} \log \int_{x} p(x)^\alpha \, dx
+  $$
+- **均值表示**：
+  $$
+  H_\alpha(X) = \frac{1}{1-\alpha} \log \mathbb{E}_{p(x)} \left[ p(x)^{\alpha-1} \right]
+  $$
+- **特例**：$ \alpha \to 1 $ 时退化为香农熵。
 
 ---
 
 ## 2. 散度相关概念
 
 ### 2.1 KL散度 (Kullback-Leibler Divergence)
-# 定义  
-衡量两个分布 $ p $ 和 $ q $ 的差异。
-
-# 公式  
-$$
-D_{KL}(p \| q) = \sum_{x} p(x) \log \frac{p(x)}{q(x)}
-$$
-
-# 特性  
-非对称且非负，$ D_{KL}(p \| q) \neq D_{KL}(q \| p) $。
+- **离散形式**：
+  $$
+  D_{KL}(p \parallel q) = \sum_{x} p(x) \log \frac{p(x)}{q(x)}
+  $$
+- **连续形式**：
+  $$
+  D_{KL}(p \parallel q) = \int p(x) \log \frac{p(x)}{q(x)} \, dx
+  $$
+- **均值表示**：
+  $$
+  D_{KL}(p \parallel q) = \mathbb{E}_{p(x)} \left[ \log \frac{p(x)}{q(x)} \right]
+  $$
+- **特性**：非对称且非负。
 
 ---
 
 ### 2.2 JS散度 (Jensen-Shannon Divergence)
-# 定义  
-KL散度的对称化版本，范围在 [0, 1]。
-
-# 公式  
-$$
-D_{JS}(p \| q) = \frac{1}{2} D_{KL}(p \| m) + \frac{1}{2} D_{KL}(q \| m)
-$$
-其中 $ m = \frac{p + q}{2} $。
-
-# 应用  
-GANs中的分布匹配。
+- **离散形式**：
+  $$
+  D_{JS}(p \parallel q) = \frac{1}{2} D_{KL}(p \parallel m) + \frac{1}{2} D_{KL}(q \parallel m)
+  $$
+  （其中 $ m = \frac{p + q}{2} $）
+- **连续形式**：
+  $$
+  D_{JS}(p \parallel q) = \frac{1}{2} \left[ D_{KL}(p \parallel m) + D_{KL}(q \parallel m) \right]
+  $$
+  （其中 $ m(x) = \frac{p(x) + q(x)}{2} $）
+- **应用**：GANs中的分布匹配。
 
 ---
 
 ### 2.3 海林格距离 (Hellinger Distance)
-# 定义  
-衡量两个分布的相似性，范围在 [0, 1]。
-
-# 公式  
-$$
-H(p, q) = \sqrt{\frac{1}{2} \sum_{x} \left( \sqrt{p(x)} - \sqrt{q(x)} \right)^2}
-$$
-
-# 特性  
-对称且满足三角不等式。
+- **离散形式**：
+  $$
+  H(p, q) = \sqrt{\frac{1}{2} \sum_{x} \left( \sqrt{p(x)} - \sqrt{q(x)} \right)^2}
+  $$
+- **连续形式**：
+  $$
+  H(p, q) = \sqrt{\frac{1}{2} \int \left( \sqrt{p(x)} - \sqrt{q(x)} \right)^2 \, dx}
+  $$
+- **特性**：对称且满足三角不等式。
 
 ---
 
 ### 2.4 总变分距离 (Total Variation Distance)
-# 定义  
-两个分布差异的最大绝对值。
-
-# 公式  
-$$
-\delta(p, q) = \frac{1}{2} \sum_{x} |p(x) - q(x)|
-$$
-
----
-
-## 3. 核心关联
-# 熵与散度的关系  
-交叉熵 = 香农熵 + KL散度。
-
-# 机器学习应用  
-- **KL散度**：变分推断、EM算法。  
-- **交叉熵**：分类损失函数（如交叉熵损失）。  
-- **JS散度**：生成对抗网络（GANs）。  
+- **离散形式**：
+  $$
+  \delta(p, q) = \frac{1}{2} \sum_{x} |p(x) - q(x)|
+  $$
+- **连续形式**：
+  $$
+  \delta(p, q) = \frac{1}{2} \int |p(x) - q(x)| \, dx
+  $$
 
 ---
 
-## 4. 附录：公式速查表
+## 3. 连续形式与均值表示
 
-| 名称           | 公式                                      |
-|----------------|-------------------------------------------|
-| **香农熵**     | $ H(X) = -\sum p(x) \log p(x) $         |
-| **KL散度**     | $ D_{KL}(p \| q) = \sum p(x) \log \frac{p(x)}{q(x)} $ |
-| **JS散度**     | $ D_{JS}(p \| q) = \frac{1}{2} [D_{KL}(p \| m) + D_{KL}(q \| m)] $ |
-| **交叉熵**     | $ H(p, q) = -\sum p(x) \log q(x) $       |
-| **海林格距离** | $ H(p, q) = \sqrt{\frac{1}{2} \sum (\sqrt{p(x)} - \sqrt{q(x)})^2} $ |
-| **总变分距离** | $ \delta(p, q) = \frac{1}{2} \sum \|p(x) - q(x)\| $ |
+### 3.1 熵的连续形式
+| 名称           | 连续形式                                                                 | 均值表示                                  |
+|----------------|--------------------------------------------------------------------------|------------------------------------------|
+| 香农熵         | $$ H(X) = -\int p(x) \log p(x) dx $$                                    | $$ -\mathbb{E}_{p(x)}[\log p(x)] $$      |
+| 交叉熵         | $$ H(p, q) = -\int p(x) \log q(x) dx $$                                 | $$ -\mathbb{E}_{p(x)}[\log q(x)] $$      |
+| 雷尼熵         | $$ H_\alpha(X) = \frac{1}{1-\alpha} \log \int p(x)^\alpha dx $$        | $$ \frac{1}{1-\alpha} \log \mathbb{E}_{p(x)}[p(x)^{\alpha-1}] $$ |
+
+### 3.2 散度的连续形式
+| 名称           | 连续形式                                                                 | 均值表示                                  |
+|----------------|--------------------------------------------------------------------------|------------------------------------------|
+| KL散度         | $$ D_{KL}(p \parallel q) = \int p(x) \log \frac{p(x)}{q(x)} dx $$       | $$ \mathbb{E}_{p(x)}[\log \frac{p(x)}{q(x)}] $$ |
+| 总变分距离     | $$ \delta(p, q) = \frac{1}{2} \int \|p(x) - q(x)\| dx $$               | $$ \frac{1}{2} \mathbb{E}[\|p(x) - q(x)\|] $$ |
+
+---
+
+## 4. 核心关联与应用
+
+### 4.1 熵与散度的关系
+- **交叉熵 = 香农熵 + KL散度**：
+  $$
+  H(p, q) = H(p) + D_{KL}(p \parallel q)
+  $$
+
+### 4.2 机器学习应用
+- **KL散度**：变分推断、EM算法。
+- **交叉熵**：分类损失函数（如交叉熵损失）。
+- **JS散度**：生成对抗网络（GANs）。
+- **总变分距离**：鲁棒性优化、分布对齐。
+
+---
+
+## 5. 附录
+
+### 公式速查表
+| 名称           | 离散形式                                                                 | 连续形式                                                                 |
+|----------------|--------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| 香农熵         | $$ H(X) = -\sum p(x) \log p(x) $$                                       | $$ H(X) = -\int p(x) \log p(x) dx $$                                    |
+| KL散度         | $$ D_{KL}(p \parallel q) = \sum p(x) \log \frac{p(x)}{q(x)} $$          | $$ D_{KL}(p \parallel q) = \int p(x) \log \frac{p(x)}{q(x)} dx $$       |
+| JS散度         | $$ D_{JS}(p \parallel q) = \frac{1}{2} \left[ D_{KL}(p \parallel m) + D_{KL}(q \parallel m) \right] $$ | $$ D_{JS}(p \parallel q) = \frac{1}{2} \left[ D_{KL}(p \parallel m) + D_{KL}(q \parallel m) \right] $$ |
+| 海林格距离     | $$ H(p, q) = \sqrt{\frac{1}{2} \sum (\sqrt{p(x)} - \sqrt{q(x)})^2 } $$  | $$ H(p, q) = \sqrt{\frac{1}{2} \int (\sqrt{p(x)} - \sqrt{q(x)})^2 dx } $$ |
+
+### 关键区别与注意事项
+1. **离散 vs. 连续**：
+   - 离散熵单位为比特或纳特，连续熵（微分熵）可为负数。
+   - 连续熵依赖坐标系的缩放（如单位变换会影响结果）。
+2. **对称性**：
+   - KL散度非对称，JS散度、海林格距离对称。
+3. **数值范围**：
+   - JS散度、海林格距离范围在 [0, 1]，KL散度无上界。
