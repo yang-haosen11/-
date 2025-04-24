@@ -3,16 +3,12 @@
 ---
 
 ## 一、核心结构
-$$
-\begin{aligned}
-遗忘门 \ f_t &= \sigma(W_f \cdot [h_{t-1}, x_t] + b_f) \\
-输入门 \ i_t &= \sigma(W_i \cdot [h_{t-1}, x_t] + b_i) \\
-候选记忆 \ \tilde{C}_t &= \tanh(W_c \cdot [h_{t-1}, x_t] + b_c) \\
-细胞状态 \ C_t &= f_t \odot C_{t-1} + i_t \odot \tilde{C}_t \\
-输出门 \ o_t &= \sigma(W_o \cdot [h_{t-1}, x_t] + b_o) \\
-隐藏状态 \ h_t &= o_t \odot \tanh(C_t)
-\end{aligned}
-$$
+- 遗忘门 $ f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f) $，  
+- 输入门 $ i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i) $，  
+- 候选记忆 $ \tilde{C}_t = \tanh(W_c \cdot [h_{t-1}, x_t] + b_c) $，  
+- 细胞状态 $ C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t $，  
+- 输出门 $ o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o) $，  
+- 隐藏状态 $ h_t = o_t \odot \tanh(C_t) $。
 
 ---
 
