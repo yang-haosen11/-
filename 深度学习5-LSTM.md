@@ -3,6 +3,7 @@
 ---
 
 ## 一、核心结构
+```latex
 $$
 \begin{aligned}
 遗忘门 \ f_t &= \sigma(W_f \cdot [h_{t-1}, x_t] + b_f) \\
@@ -13,6 +14,7 @@ $$
 隐藏状态 \ h_t &= o_t \odot \tanh(C_t)
 \end{aligned}
 $$
+```
 
 ---
 
