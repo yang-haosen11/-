@@ -68,8 +68,11 @@ $$
 
 ### 2. 梯度计算示例（t=2时刻）
 $$
-\frac{\partial C_2}{\partial W_f} = \underbrace{C_1 \cdot f_2'}_{\text{当前梯度}} + \underbrace{f_2 \cdot \frac{\partial C_1}{\partial W_f}}_{\text{历史梯度}}
+\frac{\partial C_2}{\partial W_f} = 
+\underbrace{C_1 \cdot f_2'}_{\text{当前梯度}} + 
+\underbrace{f_2 \cdot \frac{\partial C_1}{\partial W_f}}_{\text{历史梯度}}
 $$
+
 其中：
 $$
 f_2' = f_2 \odot (1 - f_2) = 0.693 \times (1 - 0.693) \approx 0.212
